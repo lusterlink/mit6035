@@ -25,12 +25,25 @@ class Main {
 		        		{
 		        			String type = "";
 		        			String text = token.getText();
+//                            System.out.println("Token type: " + token.getType());
 		
 		        			switch (token.getType())
 		        			{
 		        			case DecafScannerTokenTypes.ID:
-		        				type = " IDENTIFIER";
+                                type = " IDENTIFIER";
 		        				break;
+                            case DecafScannerTokenTypes.CHARLITERAL:
+                                type = " CHARLITERAL";
+                                break;
+                            case DecafScannerTokenTypes.STRING:
+                                type = " STRINGLITERAL";
+                                break;
+                            case DecafScannerTokenTypes.INT:
+                                type = " INTLITERAL";
+                                break;
+                            case DecafScannerTokenTypes.BOOL:
+                                type = " BOOLEANLITERAL";
+                                break;
 		        			}
 		        			System.out.println (token.getLine() + type + " " + text);
 		        		}

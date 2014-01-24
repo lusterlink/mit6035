@@ -17,18 +17,49 @@ tokens
   "class";
 }
 
+
 LCURLY options { paraphrase = "{"; } : "{";
 RCURLY options { paraphrase = "}"; } : "}";
 
 ID options { paraphrase = "an identifier"; } : 
-  ('a'..'z' | 'A'..'Z')+;
+  ("0x")=>("0x" ('0'..'9' | 'a'..'f' | 'A'..'F')+) | ('a'..'z' | 'A'..'Z' | '_' | '0'..'9')+ {
+    String result = new String(new String(text.getBuffer(), _begin, text.length()-_begin));
+    if (result.equals("boolean") || result.equals("break") || result.equals("callout") ||
+        result.equals("class") || result.equals("continue") || result.equals("else") ||
+        result.equals("for") || result.equals("if") || result.equals("int") || 
+        result.equals("return") || result.equals("void")) {
+           _ttype = KEYWORD; 
+        } else if (result.equals("true") || result.equals("false")) {
+           _ttype = BOOL;
+        } else if (result.matches("[0-9]+")) {
+           _ttype = INT;
+        }
+  };
+
+OP : '+' | '-' | '*' | '/'| '=' | "==" |'<' | '>' | '%' | "||" | "<=" | "!=" | ">=" | "+=" | "-="| "&&" {newline();};
+
+COMMA : ',' {newline();};
+
+RPARA : ')'{newline();};
+LPARA : '('{newline();};
+SEMI : ';'{newline();};
+LSQAR : '['{newline();};
+RSQAR : ']'{newline();};
+
+//INT : ('0'..'9')+;
 
 WS_ : (' ' | '\n' {newline();}) {_ttype = Token.SKIP; };
 
 SL_COMMENT : "//" (~'\n')* '\n' {_ttype = Token.SKIP; newline (); };
 
-CHAR : '\'' (ESC|~'\'') '\'';
-STRING : '"' (ESC|~'"')* '"';
+CHARLITERAL : '\'' (ESC | ~('\'' | '\\' | '"' | '\n' | '\t')) '\'';
+STRING : '"' (ESC|~('"' | '\\' | '\'' | '\n' | '\t'))* '"';
 
 protected
-ESC :  '\\' ('n'|'"');
+ESC :  '\\' ('n'|'"'|'t'|'\\'|'\'');
+protected
+INT : ;
+protected
+KEYWORD : ;
+protected
+BOOL : ;
