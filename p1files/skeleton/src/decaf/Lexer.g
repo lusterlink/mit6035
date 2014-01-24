@@ -36,19 +36,20 @@ ID options { paraphrase = "an identifier"; } :
         }
   };
 
-OP : '+' | '-' | '*' | '/'| '=' | "==" |'<' | '>' | '%' | "||" | "<=" | "!=" | ">=" | "+=" | "-="| "&&" {newline();};
+OP : '+' | '-' | '*' | '/'| '=' | "==" |'<' | '>' | '%' | "||" | "<=" | "!=" | ">=" | "+=" | "-="| "&&";
 
-COMMA : ',' {newline();};
+COMMA : ',' ;
 
-RPARA : ')'{newline();};
-LPARA : '('{newline();};
-SEMI : ';'{newline();};
-LSQAR : '['{newline();};
-RSQAR : ']'{newline();};
+RPARA : ')';
+LPARA : '(';
+SEMI : ';';
+LSQAR : '[';
+RSQAR : ']';
 
 //INT : ('0'..'9')+;
 
-WS_ : (' ' | '\n' {newline();}) {_ttype = Token.SKIP; };
+
+WS_ : ('\t' | ' ' | '\n' {newline();}) {_ttype = Token.SKIP; };
 
 SL_COMMENT : "//" (~'\n')* '\n' {_ttype = Token.SKIP; newline (); };
 
