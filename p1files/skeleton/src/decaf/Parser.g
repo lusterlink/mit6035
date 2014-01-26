@@ -28,7 +28,9 @@ block: LCURLY (var_decl)* (statement)* RCURLY;
 
 var_decl: TYPE ID (COMMA TYPE ID)* SEMI ;
 
-statement: (location ASS_OP expr SEMI) | (RETURN (expr)* SEMI) | (IF LPARA expr RPARA block (ELSE block)?);
+statement: (location assign_ops expr SEMI) | (RETURN (expr)* SEMI) | (IF LPARA expr RPARA block (ELSE block)?) | (FOR ID EQUALS_OP expr COMMA expr block) | (method_call SEMI) | (BREAK SEMI) | (CONTINUE SEMI);
+protected
+assign_ops: ASS_OP | EQUALS_OP;
 
 location: ID | (ID LSQAR expr RSQAR) ;
 

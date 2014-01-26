@@ -15,6 +15,7 @@ options
 tokens 
 {
   "class";
+  "!";
 }
 
 
@@ -63,8 +64,12 @@ ASS_OP : ("==" | '=' | "+=" | "-=" | '+' | '-') {
        _ttype = ARTH_OP;
     } else if (result.equals("-")) {
        _ttype = MINUS_OP;
+    } else if (result.equals("=")) {
+       _ttype = EQUALS_OP;
     }
 };
+protected
+EQUALS_OP: ;
 ARTH_OP : '*' | '/' | '%';
 REL_OP : '<' | '>' | "<=" | ">=";
 EQ_OP : "!=";
