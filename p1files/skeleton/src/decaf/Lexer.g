@@ -22,7 +22,7 @@ LCURLY options { paraphrase = "{"; } : "{";
 RCURLY options { paraphrase = "}"; } : "}";
 
 ID options { paraphrase = "an identifier"; } : 
-  ("0x")=>("0x" ('0'..'9' | 'a'..'f' | 'A'..'F')+) | ('a'..'z' | 'A'..'Z' | '_' | '0'..'9')+ {
+  (("0x")=>("0x" ('0'..'9' | 'a'..'f' | 'A'..'F')+) | ('a'..'z' | 'A'..'Z' | '_' | '0'..'9')+) {
     String result = new String(text.getBuffer(), _begin, text.length()-_begin);
     if (result.equals("boolean") || result.equals("int")) {
         _ttype = TYPE; 
@@ -48,17 +48,21 @@ ID options { paraphrase = "an identifier"; } :
         _ttype = BOOL;
     } else if (result.matches("[0-9]+")) {
         _ttype = INT;
+    } else if (result.length() > 1 && result.charAt(0) == '0' && result.charAt(1) == 'x') {
+        _ttype = INT;
     } else if (Character.isDigit(result.charAt(0))) {
         throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());
     }
   };
 
-ASS_OP : "==" | '=' | "+=" | "-=" | '+' | '-' {
+ASS_OP : ("==" | '=' | "+=" | "-=" | '+' | '-') {
     String result = new String(text.getBuffer(), _begin, text.length()-_begin);
     if (result.equals("==")) {
        _ttype = EQ_OP;
-    } else if (result.equals("+") || result.equals("-")) {
+    } else if (result.equals("+")) {
        _ttype = ARTH_OP;
+    } else if (result.equals("-")) {
+       _ttype = MINUS_OP;
     }
 };
 ARTH_OP : '*' | '/' | '%';
@@ -83,6 +87,9 @@ SL_COMMENT : "//" (~'\n')* '\n' {_ttype = Token.SKIP; newline (); };
 
 CHARLITERAL : '\'' (ESC | ~('\'' | '\\' | '"' | '\n' | '\t')) '\'';
 STRING : '"' (ESC|~('"' | '\\' | '\'' | '\n' | '\t'))* '"';
+
+protected
+MINUS_OP : ;
 
 protected
 ESC :  '\\' ('n'|'"'|'t'|'\\'|'\'');

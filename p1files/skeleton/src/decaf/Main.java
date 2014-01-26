@@ -25,7 +25,7 @@ class Main {
 		        		{
 		        			String type = "";
 		        			String text = token.getText();
-//                            System.out.println("Token type: " + token.getType());
+                            System.out.println("Token type: " + token.getType());
 		
 		        			switch (token.getType())
 		        			{
