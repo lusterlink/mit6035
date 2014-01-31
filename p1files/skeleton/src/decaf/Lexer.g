@@ -56,12 +56,12 @@ ID options { paraphrase = "an identifier"; } :
     }
   };
 
-ASS_OP : ("==" | '=' | "+=" | "-=" | '+' | '-') {
+ASS_OP options { paraphrase = "an assignment operation"; } : ("==" | '=' | "+=" | "-=" | '+' | '-') {
     String result = new String(text.getBuffer(), _begin, text.length()-_begin);
     if (result.equals("==")) {
        _ttype = EQ_OP;
     } else if (result.equals("+")) {
-       _ttype = ARTH_OP;
+       _ttype = PLUS_OP;
     } else if (result.equals("-")) {
        _ttype = MINUS_OP;
     } else if (result.equals("=")) {
@@ -69,19 +69,20 @@ ASS_OP : ("==" | '=' | "+=" | "-=" | '+' | '-') {
     }
 };
 protected
-EQUALS_OP: ;
-ARTH_OP : '*' | '/' | '%';
-REL_OP : '<' | '>' | "<=" | ">=";
-EQ_OP : "!=";
-COND_OP : "&&" | "||" ;
+EQUALS_OP options { paraphrase = "="; } : ;
+ARTH_OP options {paraphrase = "an arth operator"; } : '*' | '/' | '%';
+REL_OP options {paraphrase = "a rel operator"; } : '<' | '>' | "<=" | ">=";
+EQ_OP options { paraphrase = "an equaltiy operator"; } : "!=";
+AND_OP options { paraphrase = "&&"; } : "&&";
+OR_OP options { paraphrase = "||";} : "||" ;
 
-COMMA : ',' ;
+COMMA options { paraphrase = ","; } : ',' ;
 
-RPARA : ')';
-LPARA : '(';
-SEMI : ';';
-LSQAR : '[';
-RSQAR : ']';
+RPARA options { paraphrase = ")"; } : ')';
+LPARA options { paraphrase = "("; } : '(';
+SEMI options { paraphrase = ";"; } : ';';
+LSQAR options { paraphrase = "["; } : '[';
+RSQAR options { paraphrase = "]"; } : ']';
 
 //INT : ('0'..'9')+;
 
@@ -90,50 +91,53 @@ WS_ : ('\t' | ' ' | '\n' {newline();}) {_ttype = Token.SKIP; };
 
 SL_COMMENT : "//" (~'\n')* '\n' {_ttype = Token.SKIP; newline (); };
 
-CHARLITERAL : '\'' (ESC | ~('\'' | '\\' | '"' | '\n' | '\t')) '\'';
-STRING : '"' (ESC|~('"' | '\\' | '\'' | '\n' | '\t'))* '"';
+CHARLITERAL options { paraphrase="a character literal"; } : '\'' (ESC | ~('\'' | '\\' | '"' | '\n' | '\t')) '\'';
+STRING options { paraphrase="a string literal"; } : '"' (ESC|~('"' | '\\' | '\'' | '\n' | '\t'))* '"';
 
 protected
-MINUS_OP : ;
+PLUS_OP options { paraphrase="+"; } : ;
+
+protected
+MINUS_OP options { paraphrase="-"; } : ;
 
 protected
 ESC :  '\\' ('n'|'"'|'t'|'\\'|'\'');
 
 protected
-CLASS: ;
+CLASS options { paraphrase="class"; } : ;
 
 protected
-CONTINUE: ;
+CONTINUE options { paraphrase="continue"; } : ;
 
 protected
-ELSE: ;
+ELSE options { paraphrase="else"; } : ;
 
 protected
-FOR: ;
+FOR options { paraphrase="for"; } : ;
 
 protected
-IF: ;
+IF options { paraphrase="if";} : ;
 
 protected
-RETURN: ;
+RETURN options { paraphrase="return"; } : ;
 
 protected
-BREAK: ;
+BREAK options { paraphrase="break"; } : ;
 
 protected
-CALLOUT: ;
+CALLOUT options { paraphrase="callout"; } : ;
 
 protected
-VOID : ;
+VOID options { paraphrase="void"; } : ;
 
 protected
-INT : ;
+INT options { paraphrase="an integer"; } : ;
 
 protected
-TYPE : ;
+TYPE options { paraphrase="a type identifier"; } : ;
 
 protected
-KEYWORD : ;
+KEYWORD options { paraphrase="a keyward"; }: ;
 
 protected
-BOOL : ;
+BOOL options { paraphrase="a boolean"; } : ;
