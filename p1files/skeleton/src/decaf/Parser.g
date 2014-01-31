@@ -30,7 +30,7 @@ protected
 block: LCURLY (var_decl)* (statement)* RCURLY;
 
 protected
-var_decl: TYPE ID (COMMA TYPE ID)* SEMI ;
+var_decl: TYPE ID (COMMA ID)* SEMI ;
 
 protected
 statement: (location assign_ops expr SEMI) | (RETURN (expr)* SEMI) | (IF LPARA expr RPARA block (ELSE block)?) | (FOR ID EQUALS_OP expr COMMA expr block) | (method_call SEMI) | (BREAK SEMI) | (CONTINUE SEMI);
@@ -55,7 +55,7 @@ expr_6: (expr_7 AND_OP expr_6)=>(expr_7 AND_OP expr_6) | expr_7;
 protected
 expr_7: (expr_lit OR_OP expr_7)=>(expr_lit OR_OP expr_7) | expr_lit;
 protected
-expr_lit: (method_name LPARA)=>(method_call) | (location | literal | (MINUS_OP expr) | (LPARA expr RPARA) | (TK_! expr));
+expr_lit: ((method_name LPARA) | (CALLOUT LPARA))=>(method_call) | (location | literal | (MINUS_OP expr) | (LPARA expr RPARA) | (TK_! expr));
 
 protected
 expr_3_ops: MINUS_OP | PLUS_OP;
